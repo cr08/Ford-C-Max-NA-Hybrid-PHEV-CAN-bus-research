@@ -27,7 +27,10 @@ BO_ 554 TCU_CmdVec: 8 CGEA12_TCU
  SG_ TcuCmd : 56|8@1+ (1,0) [0|255] "" Vector__XXX
 
 BO_ 359 VehicleOperatingModes_CGEA12: 8 PCM_HEV
- SG_ PwPckTq_D_Stat : 0|8@1+ (1,0) [0|255] "" CGEA12_TCU
+ SG_ Eng_D_Stat        : 7|2@0+ (1,0) [0|3] "" CGEA12_TCU
+ SG_ PwPckTq_D_Stat    : 5|2@0+ (1,0) [0|3] "" CGEA12_TCU
+ SG_ ElPw_D_Stat       : 3|3@0+ (1,0) [0|7] "" CGEA12_TCU
+ SG_ PlgActvArb_B_Actl : 0|1@0+ (1,0) [0|1] "" CGEA12_TCU
 
 BO_ 1075 BodyInfo_CGEA12: 8 Vector__XXX
  SG_ DoorAjar_Drv    : 7|1@1+ (1,0) [0|1] "" CGEA12_TCU
@@ -90,17 +93,20 @@ BO_ 651 TCU_Send_Signals_FD1: 8 Vector__XXX
 BO_ 650 TCU_GoTimeDayOfWeek: 8 Vector__XXX
  SG_ GoTimeDayOfWeek : 61|3@1+ (1,0) [0|7] "" CGEA12_TCU
 
-CM_ BO_ 554 "TCU command vector transmitted by the CGEA1.2 custom TCU replacement on ID 0x22A. Only byte7 (TcuCmd) is decoded; bytes 0-6 are all-zero or uncharacterized. Wake burst: send TcuCmd=Wake(0x00) at ~270us intervals until CAN traffic appears. Keepalive: TcuCmd=Keepalive(0x01) at 1Hz. Remote start sequence: Lock(0x41), wait ~1s, RemoteStart(0x05). Return to Keepalive after each command.";
+CM_ BO_ 554 "TCU command vector transmitted by the CGEA1.2 custom TCU replacement on ID 0x22A. Only byte7 (TcuCmd) is decoded; bytes 0-6 are all-zero or uncharacterized. Wake burst: send TcuCmd=Wake(0x00) continuously until CAN traffic appears. Keepalive: TcuCmd=Keepalive(0x01) at 1Hz. Remote start sequence: Lock(0x41), wait ~1s, RemoteStart_Stage2(0x05). Return to Keepalive after each command.";
 CM_ SG_ 554 TcuCmd "Command code byte. Values: 0x00=Wake burst, 0x01=Keepalive, 0x21=Unlock, 0x41=Lock, 0x05=RemoteStart (must follow Lock by ~1s), 0x09=RemoteStop.";
-CM_ BO_ 359 "Vehicle powertrain operating mode observed on 0x167 byte[0] on CGEA1.2. Functionally equivalent to PwPckTq_D_Stat in the FD1 DBC (also BO_ 359 / VehicleOperatingModes), but CGEA1.2 uses a full 8-bit byte encoding rather than the FD1 2-bit field at 5|2@0+. State names match the FD1 VAL_ table. Transmitter confirmed as PCM_HEV.";
-CM_ SG_ 359 PwPckTq_D_Stat "Powertrain torque availability state from byte[0]. Four observed values: 0x81(129)=PwPckOff_TqNotAvailable (powertrain completely off), 0xA1(161)=StartInPrgrss_TqNotAvail (cranking/start in progress), 0x91(145)=PwPckOn_TqAvailable (powertrain on and driveable — key-initiated start), 0x80(128)=PwPckOn_TqNotAvailable (powertrain on but NOT driveable — remote start holds this state; vehicle cannot be put in gear). Remote start sequence: PwPckOff(0x81) -> StartInPrgrss(0xA1) -> PwPckOn_TqNotAvailable(0x80). Key start sequence: PwPckOff(0x81) -> StartInPrgrss(0xA1) -> PwPckOn_TqAvailable(0x91). Remote stop: 0x91 or 0x80 -> 0x81.";
+CM_ BO_ 359 "Vehicle operating mode data on 0x167. Signal layout matches FD1 DBC (BO_ 359 VehicleOperatingModes) exactly — same Motorola bit positions for all four byte-0 signals. Transmitter confirmed as PCM_HEV on CGEA1.2.";
+CM_ SG_ 359 Eng_D_Stat "Engine state from bits[7:6]. Observed as 2 (EngAutoStopped) across all CGEA1.2 sessions — on this PHEV the ICE is always arbitrated by the HPCM, so PCM_HEV reports it as auto-stopped regardless of ICE activity.";
+CM_ SG_ 359 PwPckTq_D_Stat "Hybrid powertrain torque availability from bits[5:4]. On this PHEV, TqAvailable(3) means powertrain is operational and motive power available, likely tied to a key-initiated start; TqNotAvailable(1) means motive power is not available; Off(0) means powertrain not ready. Observed byte values: 0x80=Off+NoPlug, 0x81=Off+Plugged, 0x91=On_TqNotAvail+Plugged (likely remote start while plugged in), 0xA0=StartInPrgrss+NoPlug, 0xA1=StartInPrgrss+Plugged, 0xB0=On_TqAvail+NoPlug (powertrain operational, motive power available, not plugged in). 0xB1 (TqAvail+Plugged) not expected — vehicle cannot be put in gear while plugged in.";
+CM_ SG_ 359 ElPw_D_Stat "Electric power state from bits[3:1]. Constant 0 (Not_Supported) on HEV/PHEV variants per FD1 DBC note — signal not used on this platform.";
+CM_ SG_ 359 PlgActvArb_B_Actl "PHEV plug active arbitration from bit[0]. 1=plug arbitration active (car plugged in to charger or recently so). 0=plug not active (unplugged).";
 CM_ BO_ 1075 "CGEA1.2 body info message at 0x433. Encodes door ajar bitmask (byte0) and security/lock state (byte5). This is the CGEA1.2 functional equivalent of BCM_Lamp_Stat_FD1 (0x3C3 on FD1) — different CAN ID, same role. FD1 DBC signal Perimeter_Alarm_Status (0x3C3) is absent on CGEA1.2.";
 CM_ SG_ 1075 DoorAjar_Drv "Driver front door ajar. 1=open, 0=closed. Bit7 of byte0 (mask 0x80). All five door signals share byte0.";
 CM_ SG_ 1075 DoorAjar_Pax "Passenger front door ajar. 1=open, 0=closed. Bit6 of byte0 (mask 0x40).";
 CM_ SG_ 1075 DoorAjar_RdrDrv "Driver rear door ajar. 1=open, 0=closed. Bit5 of byte0 (mask 0x20).";
 CM_ SG_ 1075 DoorAjar_RdrPax "Passenger rear door ajar. 1=open, 0=closed. Bit4 of byte0 (mask 0x10).";
 CM_ SG_ 1075 DoorAjar_Hatch "Rear hatch/liftgate ajar. 1=open, 0=closed. Bit3 of byte0 (mask 0x08).";
-CM_ SG_ 1075 SecurityState "Full-byte security state from byte5. 0x90(144)=Armed/Locked, 0xA0(160)=Disarmed/Unlocked, 0xD0(208)=AlarmActive. On door-handle alarm trigger: HS-CAN is silent for ~5.6s between initial BCM wake and 0xD0 transition — IPC graduated beep (slow/medium/fast) occurs entirely off HS-CAN. Ignition-button alarm trigger fires horn immediately with no IPC beep sequence.";
+CM_ SG_ 1075 SecurityState "Full-byte security state from byte5. 0x90(144)=Armed/Locked, 0xA0(160)=Disarmed/Unlocked, 0xD0(208)=AlarmActive.";
 CM_ SG_ 1075 Locked "Lock state extracted from byte5 bit5 (mask 0x20). 0=Locked, 1=Unlocked. Inverted from a set=active convention — a set bit means the security system is NOT armed (unarmed/unlocked).";
 CM_ SG_ 1075 AlarmActive "Alarm firing flag from byte5 bit6 (mask 0x40). 0=Normal, 1=Alarm active (horn sounding). Returns to 0 (~16s after horn starts) when car re-arms.";
 CM_ BO_ 1072 "Cluster info message. OdometerMasterValue confirmed on CGEA1.2 at same ID (0x430) and bit position as FD1 DBC. Value in km, unsigned 24-bit Motorola. Updates approximately every 100s of driving (1 km resolution).";
@@ -127,11 +133,28 @@ VAL_ 554 TcuCmd
  33 "Unlock"
  65 "Lock" ;
 
+VAL_ 359 Eng_D_Stat
+ 0 "EngOff"
+ 1 "EngOn"
+ 2 "EngAutoStopped"
+ 3 "NotUsed" ;
+
 VAL_ 359 PwPckTq_D_Stat
- 128 "PwPckOn_TqNotAvailable"
- 129 "PwPckOff_TqNotAvailable"
- 145 "PwPckOn_TqAvailable"
- 161 "StartInPrgrss_TqNotAvail" ;
+ 0 "PwPckOff_TqNotAvailable"
+ 1 "PwPckOn_TqNotAvailable"
+ 2 "StartInPrgrss_TqNotAvail"
+ 3 "PwPckOn_TqAvailable" ;
+
+VAL_ 359 ElPw_D_Stat
+ 0 "Not_Supported"
+ 1 "Supported"
+ 2 "Not_Supported_Imminent"
+ 3 "LV_Event_In_Progress"
+ 4 "Fault_Limited" ;
+
+VAL_ 359 PlgActvArb_B_Actl
+ 0 "Off"
+ 1 "On" ;
 
 VAL_ 1075 DoorAjar_Drv
  0 "Closed"
@@ -349,5 +372,4 @@ VAL_ 1124 GPS_Hdop
 VAL_ 1124 GPS_Vdop
  31 "Invalid"
  30 "Unknown" ;
-
 
