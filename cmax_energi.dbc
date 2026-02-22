@@ -46,8 +46,9 @@ BO_ 1072 Cluster_Info1_FD1: 8 GWM
  SG_ OdometerMasterValue : 15|24@0+ (1,0) [0|16777214] "km" CGEA12_TCU
 
 BO_ 342 EngineData_6: 8 PCM_HEV
- SG_ EngClnt_Te_Actl : 7|8@0+ (1,-60) [-60|195] "degC" CGEA12_TCU
- SG_ EngOil_Te_Actl  : 15|8@0+ (1,-60) [-60|193] "degC" CGEA12_TCU
+ SG_ EngClnt_Te_Actl        : 7|8@0+  (1,-60) [-60|195] "degC"    CGEA12_TCU
+ SG_ EngOil_Te_Actl         : 15|8@0+ (1,-60) [-60|193] "degC"    CGEA12_TCU
+ SG_ EngOvrhtMitgActv_D_Ind : 36|2@0+ (1,0)   [0|3]     ""        CGEA12_TCU
 
 BO_ 786 Cluster_HEV_Data1_FD1: 8 SOBDMC_HPCM_FD1
  SG_ RgenTrip_L_Dsply  : 55|16@0+ (0.1,0) [0|6553.3] "km" CGEA12_TCU
@@ -63,8 +64,9 @@ BO_ 791 Cluster_HEV_Data8_FD1: 8 GWM
  SG_ ConsAvgTrip_Fe_Dsply : 31|24@0+ (0.0001,0) [0|1677.7215] "l/100km" CGEA12_TCU
 
 BO_ 377 EngineData_7: 8 PCM_HEV
- SG_ OdoCount        : 47|8@0+ (0.2,0) [0|50.8] "m" CGEA12_TCU
- SG_ FuelFlw_Vl_Dsply : 49|10@0+ (25,0) [0|25575] "uL" CGEA12_TCU
+ SG_ OdoCount           : 47|8@0+ (0.2,0) [0|50.8]  "m"       CGEA12_TCU
+ SG_ FuelFlw_Vl_Dsply   : 49|10@0+ (25,0) [0|25575] "uL"      CGEA12_TCU
+ SG_ EngOilLife_Pc_Actl : 39|7@0+  (1,0)  [0|100]   "Percent" CGEA12_TCU
 
 BO_ 729 HVAC_Setpt_CGEA12: 8 Vector__XXX
  SG_ HvacSetpt_Te : 16|8@1+ (0.5,-40) [-40|87.5] "degC" CGEA12_TCU
@@ -99,8 +101,27 @@ BO_ 516 EngVehicleSpThrottle: 8 PCM_HEV
  SG_ ApedPos_Pc_ActlArb : 1|10@0+ (0.1,0)  [0|102.3]   "%"   CGEA12_TCU
 
 BO_ 869 Cluster_HEV_Data2: 8 PCM_HEV
- SG_ PwrFlowTxt_D_Dsply : 21|4@0+ (1,0) [0|15] "" CGEA12_TCU
- SG_ EngOnMsg1_D_Dsply  : 38|5@0+ (1,0) [0|31] "" CGEA12_TCU
+ SG_ PwrFlowTxt_D_Dsply   : 21|4@0+  (1,0)   [0|15]     ""        CGEA12_TCU
+ SG_ EngOnMsg1_D_Dsply    : 38|5@0+  (1,0)   [0|31]     ""        CGEA12_TCU
+ SG_ EngOnMsg2_D_Dsply    : 54|5@0+  (1,0)   [0|31]     ""        CGEA12_TCU
+ SG_ FuelMaintMde_D_Dsply : 23|2@0+  (1,0)   [0|3]      ""        CGEA12_TCU
+ SG_ EffWhlLvl2_Pc_Dsply  : 17|10@0+ (0.2,-102.2) [-102.2|102.4] "percent" CGEA12_TCU
+ SG_ EffWhlThres_Pc_Dsply : 49|10@0+ (0.1,0) [0|102.3]  "percent" CGEA12_TCU
+ SG_ EngPwLvl_Pc_Dsply    : 1|10@0+  (0.1,0) [0|102.3]  "percent" CGEA12_TCU
+ SG_ EngActv_B_Dsply      : 2|1@0+   (1,0)   [0|1]      ""        CGEA12_TCU
+ SG_ EffWhlThresOn_B_Dsply : 3|1@0+  (1,0)   [0|1]      ""        CGEA12_TCU
+
+BO_ 872 Cluster_HEV_Data5: 8 PCM_HEV
+ SG_ PlgActvArb_B_Dsply : 51|1@0+ (1,0) [0|1] "" CGEA12_TCU
+ SG_ HybMdeStat_D_Dsply : 39|3@0+ (1,0) [0|7] "" CGEA12_TCU
+
+BO_ 890 Active_Noise: 8 Vector__XXX
+ SG_ ActvNseAudio_D_Stat  : 7|2@0+ (1,0) [0|3] "" CGEA12_TCU
+ SG_ ActvNse_B_Actv       : 5|1@0+ (1,0) [0|1] "" CGEA12_TCU
+ SG_ ANC_Chime_Supported  : 4|2@0+ (1,0) [0|3] "" CGEA12_TCU
+
+BO_ 891 Active_Noise_Data: 8 Vector__XXX
+ SG_ CabnSndAmb_Db_Actl : 7|8@0+ (1,30) [30|285] "decibel" CGEA12_TCU
 
 CM_ BO_ 554 "TCU command vector transmitted by the CGEA1.2 custom TCU replacement on ID 0x22A. Only byte7 (TcuCmd) is decoded; bytes 0-6 are all-zero or uncharacterized. Wake burst: send TcuCmd=Wake(0x00) at ~270us intervals until CAN traffic appears. Keepalive: TcuCmd=Keepalive(0x01) at 1Hz. Remote start sequence: Lock(0x41), wait ~1s, RemoteStart_Stage2(0x05). Return to Keepalive after each command.";
 CM_ SG_ 554 TcuCmd "Command code byte. Values: 0x00=Wake burst, 0x01=Keepalive, 0x21=Unlock, 0x41=Lock, 0x05=RemoteStart_Stage2 (must follow Lock by ~1s), 0x09=RemoteStop.";
@@ -119,11 +140,13 @@ CM_ SG_ 1075 SecurityState "Full-byte security state from byte5. 0x90(144)=Armed
 CM_ SG_ 1075 Locked "Lock state extracted from byte5 bit5 (mask 0x20). 0=Locked, 1=Unlocked. Inverted from a set=active convention — a set bit means the security system is NOT armed (unarmed/unlocked).";
 CM_ SG_ 1075 AlarmActive "Alarm firing flag from byte5 bit6 (mask 0x40). 0=Normal, 1=Alarm active (horn sounding). Returns to 0 (~16s after horn starts) when car re-arms.";
 CM_ BO_ 1072 "Cluster info message. OdometerMasterValue confirmed on CGEA1.2 at same ID (0x430) and bit position as FD1 DBC. Value in km, unsigned 24-bit Motorola. Updates approximately every 100s of driving (1 km resolution).";
-CM_ BO_ 342 "Engine coolant and oil temperatures confirmed on CGEA1.2 at same ID (0x156) and bit positions as FD1 DBC. Offset -60 degC confirmed by cold-soak: both signals read -2degC (~28F) at ambient ~30F. ICE typically starts ~456s into a cold drive on this PHEV platform.";
+CM_ BO_ 342 "Engine coolant and oil temperatures confirmed on CGEA1.2 at same ID (0x156) and bit positions as FD1 DBC. Offset -60 degC confirmed by cold-soak: both signals read -2degC (~28F) at ambient ~30F. ICE typically starts ~456s into a cold drive on this PHEV platform. EngOvrhtMitgActv_D_Ind also confirmed present at same bit position.";
+CM_ SG_ 342 EngOvrhtMitgActv_D_Ind "Engine overheat mitigation mode. 0=Normal_Mode (no action), 1=Mode1 (first-level mitigation active), 2=Mode2 (second-level mitigation active), 3=Undefined.";
 CM_ BO_ 786 "Regen trip data and charge status. Signal positions match FD1 DBC exactly on CGEA1.2. RgenTrip_L_Dsply and RgenTrip_Pc_Dsply are fully confirmed. ChrgStat_D_Dsply is confirmed present with correct VAL_ labels (observed Complete=6 at drive start after full charge).";
 CM_ BO_ 792 "EV trip and range signals. Positions match FD1 DBC on CGEA1.2. ElTrip_L_Dsply (current trip EV distance) and ElLongTerm_L_Dsply (lifetime EV odometer) are fully confirmed. FuelRange_L_Dsply is confirmed present but not independently verified against dash.";
 CM_ BO_ 791 "Gas-only fuel consumption. ConsAvgTrip_Fe_Dsply is confirmed. Note: this is RAW GAS MPG only, not the MPGe shown on the dash. Dash MPGe combines gas + electric equivalent using EPA 33.705 kWh/gal factor. Example: 10.46 L/100km = 22.5 MPG gas-only, while dash displayed 46.7 MPGe for the same trip.";
-CM_ BO_ 377 "Engine data including odometer tick counter and fuel flow. OdoCount is confirmed — wrapping 8-bit counter, accumulate across rollovers (0->255->0) to get total distance. Factor 0.2m per count. Confirmed 3.91 mi total across a multi-log session.";
+CM_ BO_ 377 "Engine data including odometer tick counter, fuel flow, and oil life. OdoCount is confirmed — wrapping 8-bit counter, accumulate across rollovers (0->255->0) to get total distance. Factor 0.2m per count. Confirmed 3.91 mi total across a multi-log session. EngOilLife_Pc_Actl confirmed present at same bit position as FD1 DBC.";
+CM_ SG_ 377 EngOilLife_Pc_Actl "Engine oil life remaining as a percentage. 7-bit Motorola field. Range 0-100%. Decreases over time and resets to 100 after an oil change.";
 CM_ BO_ 729 "HVAC temperature setpoint at 0x2D9. Not present in any available DBC — located empirically. Byte2 encodes setpoint as: degC = (raw * 0.5) - 40. Confirmed: raw=119 -> 19.5degC (67.1F) matching user HVAC target. Full 8-byte frame is constant when setpoint is unchanged. Transmitter module not positively identified.";
 CM_ BO_ 1138 "Actual charge session end time. Signal positions match FD1 DBC (GWM_HPCM_i_FrP10_FD1) exactly on CGEA1.2 at same ID. End time = estimated completion time based on current battery level and charge rate. Updates within ~1s of schedule changes via Sync. During Charge Now: shows estimated end time from current moment.";
 CM_ BO_ 1139 "Actual charge session start time. Signal positions match FD1 DBC (GWM_HPCM_i_FrP11_FD1) exactly on CGEA1.2 at same ID. During Value Charge: shows next scheduled charge start datetime. During Charge Now: shows current datetime (immediate start). Updates at Sync save event.";
@@ -137,9 +160,25 @@ CM_ BO_ 516 "Engine speed and accelerator pedal data at 0x204. Signal positions 
 CM_ SG_ 516 EngAout_N_Actl "Engine output shaft speed in RPM. Factor 2 (raw*2=rpm). 13-bit Motorola field. Confirmed present on CGEA1.2 at same bit position as FD1 DBC.";
 CM_ SG_ 516 EngAout3_N_Actl "Engine output shaft speed (high-resolution, HEV/PHEV only). Factor 0.25 (raw*0.25=rpm). 16-bit Motorola field. 65535=Invalid. Confirmed present on CGEA1.2 at same bit position as FD1 DBC.";
 CM_ SG_ 516 ApedPos_Pc_ActlArb "Arbitrated accelerator pedal position as a percentage of full travel. Factor 0.1 (raw*0.1=%). Range 0-102.3%. Confirmed present on CGEA1.2 at same bit position as FD1 DBC.";
-CM_ BO_ 869 "Hybrid powertrain display signals at 0x365. Signal positions match FD1 DBC (Cluster_HEV_Data2) on CGEA1.2. PwrFlowTxt_D_Dsply encodes the active message on the Sync power flow screen. EngOnMsg1_D_Dsply encodes the reason the ICE is currently running.";
-CM_ SG_ 869 PwrFlowTxt_D_Dsply "Active text displayed on the Sync hybrid power flow screen. 4-bit Motorola field. Confirmed present on CGEA1.2 at same bit position as FD1 DBC.";
-CM_ SG_ 869 EngOnMsg1_D_Dsply "Reason the ICE is currently running, as displayed on the Sync power flow screen. 5-bit Motorola field. 0=No_Display when ICE is off. Confirmed present on CGEA1.2 at same bit position as FD1 DBC.";
+CM_ BO_ 869 "Hybrid powertrain display signals at 0x365. All signals match FD1 DBC (Cluster_HEV_Data2) positions exactly on CGEA1.2. Encodes the power flow screen text, ICE-on reason, fuel maintenance mode, efficiency gauge data, engine power level, and ICE activity flag.";
+CM_ SG_ 869 PwrFlowTxt_D_Dsply "Active text displayed on the Sync hybrid power flow screen. 4-bit Motorola field. 0=No_Text when idle.";
+CM_ SG_ 869 EngOnMsg1_D_Dsply "Primary reason the ICE is currently running, as displayed on the Sync power flow screen. 5-bit Motorola field. 0=No_Display when ICE is off.";
+CM_ SG_ 869 EngOnMsg2_D_Dsply "Secondary/alternate ICE-on reason display field. Same VAL_ encoding as EngOnMsg1_D_Dsply. 5-bit Motorola field.";
+CM_ SG_ 869 FuelMaintMde_D_Dsply "Fuel maintenance mode status. Activates when the PHEV has run primarily on EV for an extended period and the ICE needs to run to keep the fuel fresh. 0=OK, 1=Close_to_Fuel_Maint, 2=In_Fuel_Maint_Mode, 3=Feature_Not_Present.";
+CM_ SG_ 869 EffWhlLvl2_Pc_Dsply "Efficiency wheel level 2 display value in percent. Factor 0.2, offset -102.2. Range -102.2 to 102.4%.";
+CM_ SG_ 869 EffWhlThres_Pc_Dsply "Efficiency wheel threshold display value in percent. Factor 0.1. Range 0-102.3%.";
+CM_ SG_ 869 EngPwLvl_Pc_Dsply "Engine power level as displayed on the Sync power flow screen, as a percentage of maximum. Factor 0.1. Range 0-102.3%.";
+CM_ SG_ 869 EngActv_B_Dsply "ICE engine active flag for display purposes. 1=On (ICE running), 0=Off.";
+CM_ SG_ 869 EffWhlThresOn_B_Dsply "Efficiency wheel threshold active flag. 1=On (threshold indicator displayed), 0=Off.";
+CM_ BO_ 872 "Hybrid mode status and plug display signals at 0x368. Signal positions match FD1 DBC (Cluster_HEV_Data5) exactly on CGEA1.2. HybMdeStat_D_Dsply encodes the active hybrid operating mode. Note: FD1 DBC indicates HybMdeStat_D_Dsply is not transmitted by HPCM on FD1 — may differ on CGEA1.2.";
+CM_ SG_ 872 PlgActvArb_B_Dsply "Plug active arbitration display flag. 1=On (plug active/charging), 0=Off. Display counterpart to PlgActvArb_B_Actl in BO_ 359.";
+CM_ SG_ 872 HybMdeStat_D_Dsply "Hybrid operating mode status for display. 0=Null_State, 1=Auto_Charge_Deplete_Mode (normal EV priority), 2=Auto_Charge_Sustain_Mode, 3=Forced_Charge_Sustain_Mode, 4=Forced_EV_Mode, 5=EV_Override, 6=EV_Charge.";
+CM_ BO_ 890 "Active noise cancellation status at 0x37A, sourced from the CGEA1.2 PT CAN DBC (Active_Noise). Encodes ANC system state and chime support. ActvNse_B_Actv confirmed to toggle with ICE running, consistent with ANC engaging when engine noise is present. No VAL_ tables in source DBC for the 2-bit fields.";
+CM_ SG_ 890 ActvNse_B_Actv "Active noise cancellation active flag. 1=Active (ANC engaged, typically when ICE is running), 0=Inactive. Confirmed to correlate with ICE state on this PHEV.";
+CM_ SG_ 890 ActvNseAudio_D_Stat "Active noise audio system status. 2-bit field. Encoding unconfirmed — no VAL_ table in source DBC.";
+CM_ SG_ 890 ANC_Chime_Supported "Active noise cancellation chime support flag. 2-bit field. Likely a feature presence/capability indicator. Encoding unconfirmed — no VAL_ table in source DBC.";
+CM_ BO_ 891 "Cabin ambient sound level at 0x37B, sourced from the CGEA1.2 PT CAN DBC (Active_Noise_Data). Single signal encoding the measured in-cabin noise level in decibels. Likely used by the active noise cancellation or audio compensation system.";
+CM_ SG_ 891 CabnSndAmb_Db_Actl "Cabin ambient sound level in decibels. 8-bit Motorola field. Offset 30 (raw+30=dB value). Range 30–285 dB (practical values will be in the normal cabin noise range ~40–90 dB).";
 
 VAL_ 554 TcuCmd
  0 "Wake"
@@ -240,6 +279,12 @@ VAL_ 650 GoTimeDayOfWeek
 VAL_ 1072 OdometerMasterValue
  16777215 "Invalid" ;
 
+VAL_ 342 EngOvrhtMitgActv_D_Ind
+ 0 "Normal_Mode"
+ 1 "Mode1"
+ 2 "Mode2"
+ 3 "Undefined" ;
+
 VAL_ 516 EngAout3_N_Actl
  65535 "Invalid" ;
 
@@ -277,6 +322,55 @@ VAL_ 869 EngOnMsg1_D_Dsply
  12 "Battery_Temperature"
  13 "Drive_Mode_Selection"
  14 "_0xE_to_1F_NotUsed" ;
+
+VAL_ 869 EngOnMsg2_D_Dsply
+ 0  "No_Display"
+ 1  "Acceleration"
+ 2  "High_Speed"
+ 3  "Heater_Setting"
+ 4  "Neutral_Gear"
+ 5  "Engine_Cold"
+ 6  "Batt_Charging"
+ 7  "Low_Gear"
+ 8  "Normal_Operation"
+ 9  "Oil_Maintenance"
+ 10 "Fuel_Maintenance"
+ 11 "Hill_Decent_Control"
+ 12 "Battery_Temperature"
+ 13 "Drive_Mode_Selection"
+ 14 "_0xE_to_1F_NotUsed" ;
+
+VAL_ 869 FuelMaintMde_D_Dsply
+ 0 "OK"
+ 1 "Close_to_Fuel_Maint"
+ 2 "In_Fuel_Maint_Mode"
+ 3 "Feature_Not_Present" ;
+
+VAL_ 869 EngActv_B_Dsply
+ 0 "Off"
+ 1 "On" ;
+
+VAL_ 869 EffWhlThresOn_B_Dsply
+ 0 "Off"
+ 1 "On" ;
+
+VAL_ 872 PlgActvArb_B_Dsply
+ 0 "Off"
+ 1 "On" ;
+
+VAL_ 890 ActvNse_B_Actv
+ 0 "Inactive"
+ 1 "Active" ;
+
+VAL_ 872 HybMdeStat_D_Dsply
+ 0 "Null_State"
+ 1 "Auto_Charge_Deplete_Mode"
+ 2 "Auto_Charge_Sustain_Mode"
+ 3 "Forced_Charge_Sustain_Mode"
+ 4 "Forced_EV_Mode"
+ 5 "EV_Override"
+ 6 "EV_Charge"
+ 7 "NotUsed2" ;
 
 BO_ 1122 APIMGPS_Data_Nav_1_FD1: 8 GWM
  SG_ GPS_Latitude_Degrees  : 7|8@0+  (1,-89)     [-89|164]    "Degrees" CGEA12_TCU
