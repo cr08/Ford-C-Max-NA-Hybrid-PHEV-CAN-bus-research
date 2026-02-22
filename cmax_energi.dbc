@@ -24,7 +24,9 @@ BS_:
 BU_: CGEA12_TCU GWM PCM_HEV SOBDMC_HPCM_FD1 Vector__XXX
 
 BO_ 554 TCU_CmdVec: 8 CGEA12_TCU
- SG_ TcuCmd : 56|8@1+ (1,0) [0|255] "" Vector__XXX
+ SG_ TcuCmd_Active   : 56|1@1+ (1,0) [0|1] "" Vector__XXX
+ SG_ TcuCmd_EngCtrl  : 58|2@1+ (1,0) [0|3] "" Vector__XXX
+ SG_ TcuCmd_LockCtrl : 61|2@1+ (1,0) [0|3] "" Vector__XXX
 
 BO_ 359 VehicleOperatingModes_CGEA12: 8 PCM_HEV
  SG_ Eng_D_Stat        : 7|2@0+ (1,0) [0|3] "" CGEA12_TCU
@@ -123,8 +125,10 @@ BO_ 890 Active_Noise: 8 Vector__XXX
 BO_ 891 Active_Noise_Data: 8 Vector__XXX
  SG_ CabnSndAmb_Db_Actl : 7|8@0+ (1,30) [30|285] "decibel" CGEA12_TCU
 
-CM_ BO_ 554 "TCU command vector transmitted by the CGEA1.2 custom TCU replacement on ID 0x22A. Only byte7 (TcuCmd) is decoded; bytes 0-6 are all-zero or uncharacterized. Wake burst: send TcuCmd=Wake(0x00) at ~270us intervals until CAN traffic appears. Keepalive: TcuCmd=Keepalive(0x01) at 1Hz. Remote start sequence: Lock(0x41), wait ~1s, RemoteStart_Stage2(0x05). Return to Keepalive after each command.";
-CM_ SG_ 554 TcuCmd "Command code byte. Values: 0x00=Wake burst, 0x01=Keepalive, 0x21=Unlock, 0x41=Lock, 0x05=RemoteStart_Stage2 (must follow Lock by ~1s), 0x09=RemoteStop.";
+CM_ BO_ 554 "TCU command vector transmitted by the CGEA1.2 custom TCU replacement on ID 0x22A. Byte7 carries three non-overlapping bit fields; bytes 0-6 are all-zero or uncharacterized. Wake burst: Active=0, all others=0 (0x00), sent at ~270us intervals until CAN traffic appears. Keepalive: Active=1, others=0 (0x01) at 1Hz. Remote start sequence: LockCtrl=Lock, wait ~1s, EngCtrl=RS_Stage2. Return to Keepalive after each command.";
+CM_ SG_ 554 TcuCmd_Active "Byte7 bit0 — command active flag. 0=Wake burst (no command context), 1=Active (keepalive or command in progress). Always 1 for all normal operating commands.";
+CM_ SG_ 554 TcuCmd_EngCtrl "Byte7 bits[3:2] — engine/remote-start control field. 0=None (keepalive/lock only), 1=RemoteStart_Stage2 (must follow Lock by ~1s), 2=RemoteStop. Return to 0 after command.";
+CM_ SG_ 554 TcuCmd_LockCtrl "Byte7 bits[6:5] — lock control field. 0=None (keepalive/engine only), 1=Unlock, 2=Lock. Return to 0 after command. Combined command byte: Active|(EngCtrl<<2)|(LockCtrl<<5).";
 CM_ BO_ 359 "Vehicle operating mode data on 0x167. Signal layout matches FD1 DBC (BO_ 359 VehicleOperatingModes) exactly — same Motorola bit positions for all four byte-0 signals. Transmitter confirmed as PCM_HEV on CGEA1.2.";
 CM_ SG_ 359 Eng_D_Stat "Engine state from bits[7:6]. Typically 2 (EngAutoStopped) during EV driving as the ICE is managed by the HPCM. Transitions to 1 (EngOn) when the ICE is actively running (e.g., during ICE-on remote start or ICE engagement while driving).";
 CM_ SG_ 359 PwPckTq_D_Stat "Hybrid powertrain torque availability from bits[5:4]. On this PHEV, TqAvailable(3) means ICE is running and providing torque; TqNotAvailable(1) means EV-only driving; Off(0) means powertrain not ready. Observed byte values: 0x80=Off+NoPlug, 0x81=Off+Plugged, 0x91=On_TqNotAvail+Plugged (EV driving), 0xA0=StartInPrgrss+NoPlug (remote crank), 0xA1=StartInPrgrss+Plugged (key crank), 0xB0=On_TqAvail+NoPlug (ICE run, remote start). 0xB1 (TqAvail+Plugged) not expected — vehicle cannot be put in gear while plugged in.";
@@ -180,13 +184,21 @@ CM_ SG_ 890 ANC_Chime_Supported "Active noise cancellation chime support flag. 2
 CM_ BO_ 891 "Cabin ambient sound level at 0x37B, sourced from the CGEA1.2 PT CAN DBC (Active_Noise_Data). Single signal encoding the measured in-cabin noise level in decibels. Likely used by the active noise cancellation or audio compensation system.";
 CM_ SG_ 891 CabnSndAmb_Db_Actl "Cabin ambient sound level in decibels. 8-bit Motorola field. Offset 30 (raw+30=dB value). Range 30–285 dB (practical values will be in the normal cabin noise range ~40–90 dB).";
 
-VAL_ 554 TcuCmd
- 0 "Wake"
- 1 "Keepalive"
- 5 "RemoteStart_Stage2"
- 9 "RemoteStop"
- 33 "Unlock"
- 65 "Lock" ;
+VAL_ 554 TcuCmd_Active
+ 0 "Wake_Burst"
+ 1 "Active" ;
+ 
+VAL_ 554 TcuCmd_EngCtrl
+ 0 "None"
+ 1 "RemoteStart_Stage2"
+ 2 "RemoteStop"
+ 3 "Reserved" ;
+ 
+VAL_ 554 TcuCmd_LockCtrl
+ 0 "None"
+ 1 "Unlock"
+ 2 "Lock"
+ 3 "Reserved" ;
 
 VAL_ 359 Eng_D_Stat
  0 "EngOff"
