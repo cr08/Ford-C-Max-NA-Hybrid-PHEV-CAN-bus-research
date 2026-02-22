@@ -93,20 +93,29 @@ BO_ 651 TCU_Send_Signals_FD1: 8 Vector__XXX
 BO_ 650 TCU_GoTimeDayOfWeek: 8 Vector__XXX
  SG_ GoTimeDayOfWeek : 61|3@1+ (1,0) [0|7] "" CGEA12_TCU
 
-CM_ BO_ 554 "TCU command vector transmitted by the CGEA1.2 custom TCU replacement on ID 0x22A. Only byte7 (TcuCmd) is decoded; bytes 0-6 are all-zero or uncharacterized. Wake burst: send TcuCmd=Wake(0x00) continuously until CAN traffic appears. Keepalive: TcuCmd=Keepalive(0x01) at 1Hz. Remote start sequence: Lock(0x41), wait ~1s, RemoteStart_Stage2(0x05). Return to Keepalive after each command.";
-CM_ SG_ 554 TcuCmd "Command code byte. Values: 0x00=Wake burst, 0x01=Keepalive, 0x21=Unlock, 0x41=Lock, 0x05=RemoteStart (must follow Lock by ~1s), 0x09=RemoteStop.";
+BO_ 516 EngVehicleSpThrottle: 8 PCM_HEV
+ SG_ EngAout_N_Actl    : 28|13@0+ (2,0)    [0|16382]   "rpm" CGEA12_TCU
+ SG_ EngAout3_N_Actl   : 55|16@0+ (0.25,0) [0|16383.5] "rpm" CGEA12_TCU
+ SG_ ApedPos_Pc_ActlArb : 1|10@0+ (0.1,0)  [0|102.3]   "%"   CGEA12_TCU
+
+BO_ 869 Cluster_HEV_Data2: 8 PCM_HEV
+ SG_ PwrFlowTxt_D_Dsply : 21|4@0+ (1,0) [0|15] "" CGEA12_TCU
+ SG_ EngOnMsg1_D_Dsply  : 38|5@0+ (1,0) [0|31] "" CGEA12_TCU
+
+CM_ BO_ 554 "TCU command vector transmitted by the CGEA1.2 custom TCU replacement on ID 0x22A. Only byte7 (TcuCmd) is decoded; bytes 0-6 are all-zero or uncharacterized. Wake burst: send TcuCmd=Wake(0x00) at ~270us intervals until CAN traffic appears. Keepalive: TcuCmd=Keepalive(0x01) at 1Hz. Remote start sequence: Lock(0x41), wait ~1s, RemoteStart_Stage2(0x05). Return to Keepalive after each command.";
+CM_ SG_ 554 TcuCmd "Command code byte. Values: 0x00=Wake burst, 0x01=Keepalive, 0x21=Unlock, 0x41=Lock, 0x05=RemoteStart_Stage2 (must follow Lock by ~1s), 0x09=RemoteStop.";
 CM_ BO_ 359 "Vehicle operating mode data on 0x167. Signal layout matches FD1 DBC (BO_ 359 VehicleOperatingModes) exactly — same Motorola bit positions for all four byte-0 signals. Transmitter confirmed as PCM_HEV on CGEA1.2.";
-CM_ SG_ 359 Eng_D_Stat "Engine state from bits[7:6]. Observed as 2 (EngAutoStopped) across all CGEA1.2 sessions — on this PHEV the ICE is always arbitrated by the HPCM, so PCM_HEV reports it as auto-stopped regardless of ICE activity.";
-CM_ SG_ 359 PwPckTq_D_Stat "Hybrid powertrain torque availability from bits[5:4]. On this PHEV, TqAvailable(3) means powertrain is operational and motive power available, likely tied to a key-initiated start; TqNotAvailable(1) means motive power is not available; Off(0) means powertrain not ready. Observed byte values: 0x80=Off+NoPlug, 0x81=Off+Plugged, 0x91=On_TqNotAvail+Plugged (likely remote start while plugged in), 0xA0=StartInPrgrss+NoPlug, 0xA1=StartInPrgrss+Plugged, 0xB0=On_TqAvail+NoPlug (powertrain operational, motive power available, not plugged in). 0xB1 (TqAvail+Plugged) not expected — vehicle cannot be put in gear while plugged in.";
+CM_ SG_ 359 Eng_D_Stat "Engine state from bits[7:6]. Typically 2 (EngAutoStopped) during EV driving as the ICE is managed by the HPCM. Transitions to 1 (EngOn) when the ICE is actively running (e.g., during ICE-on remote start or ICE engagement while driving).";
+CM_ SG_ 359 PwPckTq_D_Stat "Hybrid powertrain torque availability from bits[5:4]. On this PHEV, TqAvailable(3) means ICE is running and providing torque; TqNotAvailable(1) means EV-only driving; Off(0) means powertrain not ready. Observed byte values: 0x80=Off+NoPlug, 0x81=Off+Plugged, 0x91=On_TqNotAvail+Plugged (EV driving), 0xA0=StartInPrgrss+NoPlug (remote crank), 0xA1=StartInPrgrss+Plugged (key crank), 0xB0=On_TqAvail+NoPlug (ICE run, remote start). 0xB1 (TqAvail+Plugged) not expected — vehicle cannot be put in gear while plugged in.";
 CM_ SG_ 359 ElPw_D_Stat "Electric power state from bits[3:1]. Constant 0 (Not_Supported) on HEV/PHEV variants per FD1 DBC note — signal not used on this platform.";
-CM_ SG_ 359 PlgActvArb_B_Actl "PHEV plug active arbitration from bit[0]. 1=plug arbitration active (car plugged in to charger or recently so). 0=plug not active (unplugged).";
+CM_ SG_ 359 PlgActvArb_B_Actl "PHEV plug active arbitration from bit[0]. 1=plug arbitration active (car plugged in to charger or recently so). 0=plug not active (unplugged). Distinguishes key-start/charging context from remote-start/unplugged context. On Powersplit PHEVs, HPCM transmits; on MHT PHEVs, PCM_HEV transmits and HPCM receives.";
 CM_ BO_ 1075 "CGEA1.2 body info message at 0x433. Encodes door ajar bitmask (byte0) and security/lock state (byte5). This is the CGEA1.2 functional equivalent of BCM_Lamp_Stat_FD1 (0x3C3 on FD1) — different CAN ID, same role. FD1 DBC signal Perimeter_Alarm_Status (0x3C3) is absent on CGEA1.2.";
 CM_ SG_ 1075 DoorAjar_Drv "Driver front door ajar. 1=open, 0=closed. Bit7 of byte0 (mask 0x80). All five door signals share byte0.";
 CM_ SG_ 1075 DoorAjar_Pax "Passenger front door ajar. 1=open, 0=closed. Bit6 of byte0 (mask 0x40).";
 CM_ SG_ 1075 DoorAjar_RdrDrv "Driver rear door ajar. 1=open, 0=closed. Bit5 of byte0 (mask 0x20).";
 CM_ SG_ 1075 DoorAjar_RdrPax "Passenger rear door ajar. 1=open, 0=closed. Bit4 of byte0 (mask 0x10).";
 CM_ SG_ 1075 DoorAjar_Hatch "Rear hatch/liftgate ajar. 1=open, 0=closed. Bit3 of byte0 (mask 0x08).";
-CM_ SG_ 1075 SecurityState "Full-byte security state from byte5. 0x90(144)=Armed/Locked, 0xA0(160)=Disarmed/Unlocked, 0xD0(208)=AlarmActive.";
+CM_ SG_ 1075 SecurityState "Full-byte security state from byte5. 0x90(144)=Armed/Locked, 0xA0(160)=Disarmed/Unlocked, 0xD0(208)=AlarmActive. On door-handle alarm trigger: HS-CAN is silent for ~5.6s between initial BCM wake and 0xD0 transition — IPC graduated beep (slow/medium/fast) occurs entirely off HS-CAN. Ignition-button alarm trigger fires horn immediately with no IPC beep sequence.";
 CM_ SG_ 1075 Locked "Lock state extracted from byte5 bit5 (mask 0x20). 0=Locked, 1=Unlocked. Inverted from a set=active convention — a set bit means the security system is NOT armed (unarmed/unlocked).";
 CM_ SG_ 1075 AlarmActive "Alarm firing flag from byte5 bit6 (mask 0x40). 0=Normal, 1=Alarm active (horn sounding). Returns to 0 (~16s after horn starts) when car re-arms.";
 CM_ BO_ 1072 "Cluster info message. OdometerMasterValue confirmed on CGEA1.2 at same ID (0x430) and bit position as FD1 DBC. Value in km, unsigned 24-bit Motorola. Updates approximately every 100s of driving (1 km resolution).";
@@ -124,6 +133,13 @@ CM_ SG_ 651 GoTimeOnOff "Go-time enabled state. 1=Off, 2=On. Confirmed: transiti
 CM_ SG_ 651 PrcondLevel "Preconditioning level. 0=Off, 1=Low(65F), 2=Medium(72F), 3=High(80F). Low confirmed empirically. Medium and High values are from DBC VAL_ table — not independently tested.";
 CM_ BO_ 650 "Go-time day-of-week field at 0x28A byte7[7:5]. Not in any DBC — located empirically. Confirmed: value=5 after saving Friday go-time profile.";
 CM_ SG_ 650 GoTimeDayOfWeek "Day of week for the currently active go-time profile. 0=NotUsed, 1=Mon through 7=Sun. 3-bit field at byte7 bits[7:5] (Intel DBC position 61|3).";
+CM_ BO_ 516 "Engine speed and accelerator pedal data at 0x204. Signal positions match FD1 DBC exactly on CGEA1.2. EngAout_N_Actl and EngAout3_N_Actl both represent engine RPM at different resolutions; EngAout3_N_Actl is HEV/PHEV only per FD1 DBC note. ApedPos_Pc_ActlArb is the arbitrated accelerator pedal position in percent.";
+CM_ SG_ 516 EngAout_N_Actl "Engine output shaft speed in RPM. Factor 2 (raw*2=rpm). 13-bit Motorola field. Confirmed present on CGEA1.2 at same bit position as FD1 DBC.";
+CM_ SG_ 516 EngAout3_N_Actl "Engine output shaft speed (high-resolution, HEV/PHEV only). Factor 0.25 (raw*0.25=rpm). 16-bit Motorola field. 65535=Invalid. Confirmed present on CGEA1.2 at same bit position as FD1 DBC.";
+CM_ SG_ 516 ApedPos_Pc_ActlArb "Arbitrated accelerator pedal position as a percentage of full travel. Factor 0.1 (raw*0.1=%). Range 0-102.3%. Confirmed present on CGEA1.2 at same bit position as FD1 DBC.";
+CM_ BO_ 869 "Hybrid powertrain display signals at 0x365. Signal positions match FD1 DBC (Cluster_HEV_Data2) on CGEA1.2. PwrFlowTxt_D_Dsply encodes the active message on the Sync power flow screen. EngOnMsg1_D_Dsply encodes the reason the ICE is currently running.";
+CM_ SG_ 869 PwrFlowTxt_D_Dsply "Active text displayed on the Sync hybrid power flow screen. 4-bit Motorola field. Confirmed present on CGEA1.2 at same bit position as FD1 DBC.";
+CM_ SG_ 869 EngOnMsg1_D_Dsply "Reason the ICE is currently running, as displayed on the Sync power flow screen. 5-bit Motorola field. 0=No_Display when ICE is off. Confirmed present on CGEA1.2 at same bit position as FD1 DBC.";
 
 VAL_ 554 TcuCmd
  0 "Wake"
@@ -223,6 +239,44 @@ VAL_ 650 GoTimeDayOfWeek
 
 VAL_ 1072 OdometerMasterValue
  16777215 "Invalid" ;
+
+VAL_ 516 EngAout3_N_Actl
+ 65535 "Invalid" ;
+
+VAL_ 869 PwrFlowTxt_D_Dsply
+ 0  "No_Text"
+ 1  "Disp_Hyb_Drive_Txt"
+ 2  "Disp_Charg_HV_Batt_Txt"
+ 3  "Disp_Idle_Txt"
+ 4  "Disp_Idle_with_Chrg_Txt"
+ 5  "Disp_Elec_Drv_Txt"
+ 6  "Disp_Eng_Drv_Txt"
+ 7  "Disp_Remote_Start_Txt"
+ 8  "Disp_Charge_Cmplt_Txt"
+ 9  "Disp_Fast_Charge_Cmplt_Txt"
+ 10 "Disp_Fast_Charge_Txt"
+ 11 "Disply_Rgen_Chrg_Txt"
+ 12 "NotUsed4"
+ 13 "NotUsed5"
+ 14 "NotUsed6"
+ 15 "NotUsed7" ;
+
+VAL_ 869 EngOnMsg1_D_Dsply
+ 0  "No_Display"
+ 1  "Acceleration"
+ 2  "High_Speed"
+ 3  "Heater_Setting"
+ 4  "Neutral_Gear"
+ 5  "Engine_Cold"
+ 6  "Batt_Charging"
+ 7  "Low_Gear"
+ 8  "Normal_Operation"
+ 9  "Oil_Maintenance"
+ 10 "Fuel_Maintenance"
+ 11 "Hill_Decent_Control"
+ 12 "Battery_Temperature"
+ 13 "Drive_Mode_Selection"
+ 14 "_0xE_to_1F_NotUsed" ;
 
 BO_ 1122 APIMGPS_Data_Nav_1_FD1: 8 GWM
  SG_ GPS_Latitude_Degrees  : 7|8@0+  (1,-89)     [-89|164]    "Degrees" CGEA12_TCU
