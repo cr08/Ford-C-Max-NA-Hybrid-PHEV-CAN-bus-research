@@ -90,8 +90,8 @@ BO_ 651 TCU_Send_Signals_FD1: 8 Vector__XXX
 BO_ 650 TCU_GoTimeDayOfWeek: 8 Vector__XXX
  SG_ GoTimeDayOfWeek : 61|3@1+ (1,0) [0|7] "" CGEA12_TCU
 
-CM_ BO_ 554 "TCU command vector transmitted by the CGEA1.2 custom TCU replacement on ID 0x22A. Only byte7 (TcuCmd) is decoded; bytes 0-6 are all-zero or uncharacterized. Wake burst: send TcuCmd=Wake(0x00) at ~270us intervals until CAN traffic appears. Keepalive: TcuCmd=Keepalive(0x01) at 1Hz. Remote start sequence: Lock(0x41), wait ~1s, RemoteStart_Stage2(0x05). Return to Keepalive after each command.";
-CM_ SG_ 554 TcuCmd "Command code byte. Values: 0x00=Wake burst, 0x01=Keepalive, 0x21=Unlock, 0x41=Lock, 0x05=RemoteStart_Stage2 (must follow Lock by ~1s), 0x09=RemoteStop.";
+CM_ BO_ 554 "TCU command vector transmitted by the CGEA1.2 custom TCU replacement on ID 0x22A. Only byte7 (TcuCmd) is decoded; bytes 0-6 are all-zero or uncharacterized. Wake burst: send TcuCmd=Wake(0x00) at ~270us intervals until CAN traffic appears. Keepalive: TcuCmd=Keepalive(0x01) at 1Hz. Remote start sequence: Lock(0x41), wait ~1s, RemoteStart(0x05). Return to Keepalive after each command.";
+CM_ SG_ 554 TcuCmd "Command code byte. Values: 0x00=Wake burst, 0x01=Keepalive, 0x21=Unlock, 0x41=Lock, 0x05=RemoteStart (must follow Lock by ~1s), 0x09=RemoteStop.";
 CM_ BO_ 359 "Vehicle powertrain operating mode observed on 0x167 byte[0] on CGEA1.2. Functionally equivalent to PwPckTq_D_Stat in the FD1 DBC (also BO_ 359 / VehicleOperatingModes), but CGEA1.2 uses a full 8-bit byte encoding rather than the FD1 2-bit field at 5|2@0+. State names match the FD1 VAL_ table. Transmitter confirmed as PCM_HEV.";
 CM_ SG_ 359 PwPckTq_D_Stat "Powertrain torque availability state from byte[0]. Four observed values: 0x81(129)=PwPckOff_TqNotAvailable (powertrain completely off), 0xA1(161)=StartInPrgrss_TqNotAvail (cranking/start in progress), 0x91(145)=PwPckOn_TqAvailable (powertrain on and driveable — key-initiated start), 0x80(128)=PwPckOn_TqNotAvailable (powertrain on but NOT driveable — remote start holds this state; vehicle cannot be put in gear). Remote start sequence: PwPckOff(0x81) -> StartInPrgrss(0xA1) -> PwPckOn_TqNotAvailable(0x80). Key start sequence: PwPckOff(0x81) -> StartInPrgrss(0xA1) -> PwPckOn_TqAvailable(0x91). Remote stop: 0x91 or 0x80 -> 0x81.";
 CM_ BO_ 1075 "CGEA1.2 body info message at 0x433. Encodes door ajar bitmask (byte0) and security/lock state (byte5). This is the CGEA1.2 functional equivalent of BCM_Lamp_Stat_FD1 (0x3C3 on FD1) — different CAN ID, same role. FD1 DBC signal Perimeter_Alarm_Status (0x3C3) is absent on CGEA1.2.";
@@ -349,4 +349,5 @@ VAL_ 1124 GPS_Hdop
 VAL_ 1124 GPS_Vdop
  31 "Invalid"
  30 "Unknown" ;
+
 
