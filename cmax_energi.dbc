@@ -1,0 +1,352 @@
+VERSION ""
+
+NS_ :
+	CM_
+	BA_DEF_
+	BA_
+	VAL_
+	CAT_DEF_
+	CAT_
+	BA_DEF_DEF_
+	BA_SGTYPE_
+	SGTYPE_
+	SGTYPE_VAL_
+	BA_DEF_SGTYPE_
+	SIGTYPE_VALTYPE_
+	BO_TX_BU_
+	BU_SG_REL_
+	BU_EV_REL_
+	BU_BO_REL_
+	SG_MUL_VAL_
+
+BS_:
+
+BU_: CGEA12_TCU GWM PCM_HEV SOBDMC_HPCM_FD1 Vector__XXX
+
+BO_ 554 TCU_CmdVec: 8 CGEA12_TCU
+ SG_ TcuCmd : 56|8@1+ (1,0) [0|255] "" Vector__XXX
+
+BO_ 359 VehicleOperatingModes_CGEA12: 8 PCM_HEV
+ SG_ PwPckTq_D_Stat : 0|8@1+ (1,0) [0|255] "" CGEA12_TCU
+
+BO_ 1075 BodyInfo_CGEA12: 8 Vector__XXX
+ SG_ DoorAjar_Drv    : 7|1@1+ (1,0) [0|1] "" CGEA12_TCU
+ SG_ DoorAjar_Pax    : 6|1@1+ (1,0) [0|1] "" CGEA12_TCU
+ SG_ DoorAjar_RdrDrv : 5|1@1+ (1,0) [0|1] "" CGEA12_TCU
+ SG_ DoorAjar_RdrPax : 4|1@1+ (1,0) [0|1] "" CGEA12_TCU
+ SG_ DoorAjar_Hatch  : 3|1@1+ (1,0) [0|1] "" CGEA12_TCU
+ SG_ SecurityState   : 40|8@1+ (1,0) [0|255] "" CGEA12_TCU
+ SG_ Locked          : 45|1@1+ (1,0) [0|1] "" CGEA12_TCU
+ SG_ AlarmActive     : 46|1@1+ (1,0) [0|1] "" CGEA12_TCU
+
+BO_ 1072 Cluster_Info1_FD1: 8 GWM
+ SG_ OdometerMasterValue : 15|24@0+ (1,0) [0|16777214] "km" CGEA12_TCU
+
+BO_ 342 EngineData_6: 8 PCM_HEV
+ SG_ EngClnt_Te_Actl : 7|8@0+ (1,-60) [-60|195] "degC" CGEA12_TCU
+ SG_ EngOil_Te_Actl  : 15|8@0+ (1,-60) [-60|193] "degC" CGEA12_TCU
+
+BO_ 786 Cluster_HEV_Data1_FD1: 8 SOBDMC_HPCM_FD1
+ SG_ RgenTrip_L_Dsply  : 55|16@0+ (0.1,0) [0|6553.3] "km" CGEA12_TCU
+ SG_ RgenTrip_Pc_Dsply : 33|10@0+ (0.1,0) [0|102.3] "percent" CGEA12_TCU
+ SG_ ChrgStat_D_Dsply  : 36|3@0+ (1,0) [0|7] "" CGEA12_TCU
+
+BO_ 792 IPC_Send_Signals_2_FD1: 8 GWM
+ SG_ ElTrip_L_Dsply     : 31|16@0+ (0.1,0) [0|6553.3] "km" CGEA12_TCU
+ SG_ ElLongTerm_L_Dsply : 7|24@0+ (0.1,0) [0|1677721.3] "km" CGEA12_TCU
+ SG_ FuelRange_L_Dsply  : 45|14@0+ (0.1,0) [0|1638.3] "km" CGEA12_TCU
+
+BO_ 791 Cluster_HEV_Data8_FD1: 8 GWM
+ SG_ ConsAvgTrip_Fe_Dsply : 31|24@0+ (0.0001,0) [0|1677.7215] "l/100km" CGEA12_TCU
+
+BO_ 377 EngineData_7: 8 PCM_HEV
+ SG_ OdoCount        : 47|8@0+ (0.2,0) [0|50.8] "m" CGEA12_TCU
+ SG_ FuelFlw_Vl_Dsply : 49|10@0+ (25,0) [0|25575] "uL" CGEA12_TCU
+
+BO_ 729 HVAC_Setpt_CGEA12: 8 Vector__XXX
+ SG_ HvacSetpt_Te : 16|8@1+ (0.5,-40) [-40|87.5] "degC" CGEA12_TCU
+
+BO_ 1138 GWM_HPCM_i_FrP10_FD1: 8 SOBDMC_HPCM_FD1
+ SG_ ActChrgEndHr_No_Actl   : 36|5@0+ (1,0) [0|29] "hour" CGEA12_TCU
+ SG_ ActChrgEndMin_No_Actl  : 29|6@0+ (1,0) [0|61] "min" CGEA12_TCU
+ SG_ ActChrgEndDay_No_Actl  : 44|5@0+ (1,1) [1|31] "day" CGEA12_TCU
+ SG_ ActChrgEndMnth_No_Actl : 51|4@0+ (1,1) [1|15] "month" CGEA12_TCU
+ SG_ ActChrgEndYr_No_Actl   : 60|5@0+ (1,2010) [2010|2040] "year" CGEA12_TCU
+ SG_ BattChrgTrgtLMin_T_Est : 10|11@0+ (1,0) [0|2045] "min" CGEA12_TCU
+
+BO_ 1139 GWM_HPCM_i_FrP11_FD1: 8 SOBDMC_HPCM_FD1
+ SG_ ActChrgStrtHr_No_Actl   : 36|5@0+ (1,0) [0|29] "hour" CGEA12_TCU
+ SG_ ActChrgStrtMin_No_Actl  : 29|6@0+ (1,0) [0|61] "min" CGEA12_TCU
+ SG_ ActChrgStrtDay_No_Actl  : 44|5@0+ (1,1) [1|31] "day" CGEA12_TCU
+ SG_ ActChrgStrMnth_No_Actl  : 51|4@0+ (1,1) [1|15] "month" CGEA12_TCU
+ SG_ ActChrgStrtYr_No_Actl   : 60|5@0+ (1,2010) [2010|2040] "year" CGEA12_TCU
+ SG_ BattChrgTrgtLMax_T_Est  : 10|11@0+ (1,0) [0|2045] "min" CGEA12_TCU
+
+BO_ 651 TCU_Send_Signals_FD1: 8 Vector__XXX
+ SG_ GoTimeHour  : 32|5@1+ (1,0) [0|31] "hour" CGEA12_TCU
+ SG_ GoTimeOnOff : 52|2@1+ (1,0) [0|3] "" CGEA12_TCU
+ SG_ PrcondLevel : 48|2@1+ (1,0) [0|3] "" CGEA12_TCU
+
+BO_ 650 TCU_GoTimeDayOfWeek: 8 Vector__XXX
+ SG_ GoTimeDayOfWeek : 61|3@1+ (1,0) [0|7] "" CGEA12_TCU
+
+CM_ BO_ 554 "TCU command vector transmitted by the CGEA1.2 custom TCU replacement on ID 0x22A. Only byte7 (TcuCmd) is decoded; bytes 0-6 are all-zero or uncharacterized. Wake burst: send TcuCmd=Wake(0x00) at ~270us intervals until CAN traffic appears. Keepalive: TcuCmd=Keepalive(0x01) at 1Hz. Remote start sequence: Lock(0x41), wait ~1s, RemoteStart_Stage2(0x05). Return to Keepalive after each command.";
+CM_ SG_ 554 TcuCmd "Command code byte. Values: 0x00=Wake burst, 0x01=Keepalive, 0x21=Unlock, 0x41=Lock, 0x05=RemoteStart_Stage2 (must follow Lock by ~1s), 0x09=RemoteStop.";
+CM_ BO_ 359 "Vehicle powertrain operating mode observed on 0x167 byte[0] on CGEA1.2. Functionally equivalent to PwPckTq_D_Stat in the FD1 DBC (also BO_ 359 / VehicleOperatingModes), but CGEA1.2 uses a full 8-bit byte encoding rather than the FD1 2-bit field at 5|2@0+. State names match the FD1 VAL_ table. Transmitter confirmed as PCM_HEV.";
+CM_ SG_ 359 PwPckTq_D_Stat "Powertrain torque availability state from byte[0]. Four observed values: 0x81(129)=PwPckOff_TqNotAvailable (powertrain completely off), 0xA1(161)=StartInPrgrss_TqNotAvail (cranking/start in progress), 0x91(145)=PwPckOn_TqAvailable (powertrain on and driveable — key-initiated start), 0x80(128)=PwPckOn_TqNotAvailable (powertrain on but NOT driveable — remote start holds this state; vehicle cannot be put in gear). Remote start sequence: PwPckOff(0x81) -> StartInPrgrss(0xA1) -> PwPckOn_TqNotAvailable(0x80). Key start sequence: PwPckOff(0x81) -> StartInPrgrss(0xA1) -> PwPckOn_TqAvailable(0x91). Remote stop: 0x91 or 0x80 -> 0x81.";
+CM_ BO_ 1075 "CGEA1.2 body info message at 0x433. Encodes door ajar bitmask (byte0) and security/lock state (byte5). This is the CGEA1.2 functional equivalent of BCM_Lamp_Stat_FD1 (0x3C3 on FD1) — different CAN ID, same role. FD1 DBC signal Perimeter_Alarm_Status (0x3C3) is absent on CGEA1.2.";
+CM_ SG_ 1075 DoorAjar_Drv "Driver front door ajar. 1=open, 0=closed. Bit7 of byte0 (mask 0x80). All five door signals share byte0.";
+CM_ SG_ 1075 DoorAjar_Pax "Passenger front door ajar. 1=open, 0=closed. Bit6 of byte0 (mask 0x40).";
+CM_ SG_ 1075 DoorAjar_RdrDrv "Driver rear door ajar. 1=open, 0=closed. Bit5 of byte0 (mask 0x20).";
+CM_ SG_ 1075 DoorAjar_RdrPax "Passenger rear door ajar. 1=open, 0=closed. Bit4 of byte0 (mask 0x10).";
+CM_ SG_ 1075 DoorAjar_Hatch "Rear hatch/liftgate ajar. 1=open, 0=closed. Bit3 of byte0 (mask 0x08).";
+CM_ SG_ 1075 SecurityState "Full-byte security state from byte5. 0x90(144)=Armed/Locked, 0xA0(160)=Disarmed/Unlocked, 0xD0(208)=AlarmActive. On door-handle alarm trigger: HS-CAN is silent for ~5.6s between initial BCM wake and 0xD0 transition — IPC graduated beep (slow/medium/fast) occurs entirely off HS-CAN. Ignition-button alarm trigger fires horn immediately with no IPC beep sequence.";
+CM_ SG_ 1075 Locked "Lock state extracted from byte5 bit5 (mask 0x20). 0=Locked, 1=Unlocked. Inverted from a set=active convention — a set bit means the security system is NOT armed (unarmed/unlocked).";
+CM_ SG_ 1075 AlarmActive "Alarm firing flag from byte5 bit6 (mask 0x40). 0=Normal, 1=Alarm active (horn sounding). Returns to 0 (~16s after horn starts) when car re-arms.";
+CM_ BO_ 1072 "Cluster info message. OdometerMasterValue confirmed on CGEA1.2 at same ID (0x430) and bit position as FD1 DBC. Value in km, unsigned 24-bit Motorola. Updates approximately every 100s of driving (1 km resolution).";
+CM_ BO_ 342 "Engine coolant and oil temperatures confirmed on CGEA1.2 at same ID (0x156) and bit positions as FD1 DBC. Offset -60 degC confirmed by cold-soak: both signals read -2degC (~28F) at ambient ~30F. ICE typically starts ~456s into a cold drive on this PHEV platform.";
+CM_ BO_ 786 "Regen trip data and charge status. Signal positions match FD1 DBC exactly on CGEA1.2. RgenTrip_L_Dsply and RgenTrip_Pc_Dsply are fully confirmed. ChrgStat_D_Dsply is confirmed present with correct VAL_ labels (observed Complete=6 at drive start after full charge).";
+CM_ BO_ 792 "EV trip and range signals. Positions match FD1 DBC on CGEA1.2. ElTrip_L_Dsply (current trip EV distance) and ElLongTerm_L_Dsply (lifetime EV odometer) are fully confirmed. FuelRange_L_Dsply is confirmed present but not independently verified against dash.";
+CM_ BO_ 791 "Gas-only fuel consumption. ConsAvgTrip_Fe_Dsply is confirmed. Note: this is RAW GAS MPG only, not the MPGe shown on the dash. Dash MPGe combines gas + electric equivalent using EPA 33.705 kWh/gal factor. Example: 10.46 L/100km = 22.5 MPG gas-only, while dash displayed 46.7 MPGe for the same trip.";
+CM_ BO_ 377 "Engine data including odometer tick counter and fuel flow. OdoCount is confirmed — wrapping 8-bit counter, accumulate across rollovers (0->255->0) to get total distance. Factor 0.2m per count. Confirmed 3.91 mi total across a multi-log session.";
+CM_ BO_ 729 "HVAC temperature setpoint at 0x2D9. Not present in any available DBC — located empirically. Byte2 encodes setpoint as: degC = (raw * 0.5) - 40. Confirmed: raw=119 -> 19.5degC (67.1F) matching user HVAC target. Full 8-byte frame is constant when setpoint is unchanged. Transmitter module not positively identified.";
+CM_ BO_ 1138 "Actual charge session end time. Signal positions match FD1 DBC (GWM_HPCM_i_FrP10_FD1) exactly on CGEA1.2 at same ID. End time = estimated completion time based on current battery level and charge rate. Updates within ~1s of schedule changes via Sync. During Charge Now: shows estimated end time from current moment.";
+CM_ BO_ 1139 "Actual charge session start time. Signal positions match FD1 DBC (GWM_HPCM_i_FrP11_FD1) exactly on CGEA1.2 at same ID. During Value Charge: shows next scheduled charge start datetime. During Charge Now: shows current datetime (immediate start). Updates at Sync save event.";
+CM_ BO_ 651 "Go-time schedule signals carried in undocumented bit fields of 0x28B (TCU_Send_Signals_FD1). The three confirmed signals (GoTimeHour, GoTimeOnOff, PrcondLevel) are at byte4[4:0], byte6[5:4], and byte6[1:0] respectively — positions NOT documented in any available DBC. Go-time minutes field location not yet identified (all test saves used :00 minutes).";
+CM_ SG_ 651 GoTimeHour "Go-time departure hour. 0-23=valid hour, 30=NoDataExists, 31=Faulty. Confirmed: value transitions to 4 after saving 4AM go-time, to 8 after saving 8AM. Minutes field not yet located.";
+CM_ SG_ 651 GoTimeOnOff "Go-time enabled state. 1=Off, 2=On. Confirmed: transitions from Off(1) to On(2) when go-time is enabled in Sync.";
+CM_ SG_ 651 PrcondLevel "Preconditioning level. 0=Off, 1=Low(65F), 2=Medium(72F), 3=High(80F). Low confirmed empirically. Medium and High values are from DBC VAL_ table — not independently tested.";
+CM_ BO_ 650 "Go-time day-of-week field at 0x28A byte7[7:5]. Not in any DBC — located empirically. Confirmed: value=5 after saving Friday go-time profile.";
+CM_ SG_ 650 GoTimeDayOfWeek "Day of week for the currently active go-time profile. 0=NotUsed, 1=Mon through 7=Sun. 3-bit field at byte7 bits[7:5] (Intel DBC position 61|3).";
+
+VAL_ 554 TcuCmd
+ 0 "Wake"
+ 1 "Keepalive"
+ 5 "RemoteStart_Stage2"
+ 9 "RemoteStop"
+ 33 "Unlock"
+ 65 "Lock" ;
+
+VAL_ 359 PwPckTq_D_Stat
+ 128 "PwPckOn_TqNotAvailable"
+ 129 "PwPckOff_TqNotAvailable"
+ 145 "PwPckOn_TqAvailable"
+ 161 "StartInPrgrss_TqNotAvail" ;
+
+VAL_ 1075 DoorAjar_Drv
+ 0 "Closed"
+ 1 "Open" ;
+
+VAL_ 1075 DoorAjar_Pax
+ 0 "Closed"
+ 1 "Open" ;
+
+VAL_ 1075 DoorAjar_RdrDrv
+ 0 "Closed"
+ 1 "Open" ;
+
+VAL_ 1075 DoorAjar_RdrPax
+ 0 "Closed"
+ 1 "Open" ;
+
+VAL_ 1075 DoorAjar_Hatch
+ 0 "Closed"
+ 1 "Open" ;
+
+VAL_ 1075 SecurityState
+ 160 "Disarmed"
+ 144 "Armed"
+ 208 "AlarmActive" ;
+
+VAL_ 1075 Locked
+ 0 "Locked"
+ 1 "Unlocked" ;
+
+VAL_ 1075 AlarmActive
+ 0 "Normal"
+ 1 "Alarming" ;
+
+VAL_ 786 ChrgStat_D_Dsply
+ 7 "NotUsed"
+ 6 "Complete"
+ 5 "Scheduled"
+ 4 "In_Progress"
+ 3 "Fault_Outside_Car"
+ 2 "Fault_Inside_Car"
+ 1 "Fault_Unknown_Location"
+ 0 "Not_Ready" ;
+
+VAL_ 651 GoTimeOnOff
+ 0 "Null"
+ 1 "Off"
+ 2 "On"
+ 3 "NotUsed" ;
+
+VAL_ 651 PrcondLevel
+ 0 "Off"
+ 1 "Low_65F"
+ 2 "Medium_72F"
+ 3 "High_80F" ;
+
+VAL_ 650 GoTimeDayOfWeek
+ 0 "NotUsed"
+ 1 "Monday"
+ 2 "Tuesday"
+ 3 "Wednesday"
+ 4 "Thursday"
+ 5 "Friday"
+ 6 "Saturday"
+ 7 "Sunday" ;
+
+VAL_ 1072 OdometerMasterValue
+ 16777215 "Invalid" ;
+
+BO_ 1122 APIMGPS_Data_Nav_1_FD1: 8 GWM
+ SG_ GPS_Latitude_Degrees  : 7|8@0+  (1,-89)     [-89|164]    "Degrees" CGEA12_TCU
+ SG_ GPS_Latitude_Minutes  : 15|6@0+ (1,0)        [0|61]       "Minutes" CGEA12_TCU
+ SG_ GPS_Latitude_Min_dec  : 23|14@0+ (0.0001,0)  [0|1.6381]  "Minutes" CGEA12_TCU
+ SG_ GpsHsphLattSth_D_Actl : 25|2@0+ (1,0)        [0|3]        "SED"    CGEA12_TCU
+ SG_ GPS_Longitude_Degrees : 39|9@0+ (1,-179)     [-179|330]   "Degrees" CGEA12_TCU
+ SG_ GPS_Longitude_Minutes : 46|6@0+ (1,0)        [0|61]       "Minutes" CGEA12_TCU
+ SG_ GPS_Longitude_Min_dec : 55|14@0+ (0.0001,0)  [0|1.6381]  "Minutes" CGEA12_TCU
+ SG_ GpsHsphLongEast_D_Actl : 9|2@0+ (1,0)        [0|3]        "SED"    CGEA12_TCU
+
+BO_ 1123 APIMGPS_Data_Nav_2_FD1: 8 GWM
+ SG_ GPS_UTC_hours          : 7|5@0+  (1,0)       [0|23]       "Hours"   CGEA12_TCU
+ SG_ GPS_UTC_minutes        : 15|6@0+ (1,0)       [0|59]       "Minutes" CGEA12_TCU
+ SG_ GPS_UTC_seconds        : 23|6@0+ (1,0)       [0|59]       "seconds" CGEA12_TCU
+ SG_ GPS_Compass_direction  : 26|4@0+ (1,0)       [0|15]       "SED"     CGEA12_TCU
+ SG_ GPS_Pdop               : 31|5@0+ (0.2,0)     [0|5.8]      "unitless" CGEA12_TCU
+ SG_ GPS_Actual_vs_Infer_pos : 38|1@0+ (1,0)      [0|1]        "SED"     CGEA12_TCU
+ SG_ GpsUtcDay_No_Actl      : 37|5@0+ (1,1)       [1|32]       "Day"     CGEA12_TCU
+ SG_ GpsUtcMnth_No_Actl     : 47|4@0+ (1,1)       [1|15]       "Month"   CGEA12_TCU
+ SG_ GpsUtcYr_No_Actl       : 55|5@0+ (1,2010)    [2010|2040]  "Year"    CGEA12_TCU
+ SG_ Gps_B_Falt             : 2|1@0+  (1,0)       [0|1]        "SED"     CGEA12_TCU
+
+BO_ 1124 APIMGPS_Data_Nav_3_FD1: 8 GWM
+ SG_ GPS_dimension          : 2|3@0+  (1,0)       [0|7]        "SED"     CGEA12_TCU
+ SG_ GPS_Sat_num_in_view    : 7|5@0+  (1,0)       [0|29]       "unitless" CGEA12_TCU
+ SG_ GPS_MSL_altitude       : 15|12@0+ (10,-20460) [-20460|20470] "feet" CGEA12_TCU
+ SG_ GPS_Heading            : 31|16@0+ (0.01,0)   [0|655.33]   "Degrees" CGEA12_TCU
+ SG_ GPS_Hdop               : 55|5@0+ (0.2,0)     [0|5.8]      "unitless" CGEA12_TCU
+ SG_ GPS_Vdop               : 63|5@0+ (0.2,0)     [0|5.8]      "unitless" CGEA12_TCU
+ SG_ GPS_Speed              : 47|8@0+ (1,0)        [0|253]      "MPH"     CGEA12_TCU
+
+CM_ BO_ 1122 "GPS position data from the APIM (Sync) GPS receiver, broadcast on HS-CAN. Confirmed present on CGEA1.2 (same IDs and signal positions as FD1 DBC). Latitude and longitude are encoded as degrees + minutes + fractional minutes with separate hemisphere flags. To reconstruct decimal degrees: lat = (GPS_Latitude_Degrees + GPS_Latitude_Minutes/60 + GPS_Latitude_Min_dec/60) * (GpsHsphLattSth_D_Actl==1 ? -1 : 1); lon = (GPS_Longitude_Degrees + GPS_Longitude_Minutes/60 + GPS_Longitude_Min_dec/60) * (GpsHsphLongEast_D_Actl==2 ? -1 : 1).";
+CM_ SG_ 1122 GPS_Latitude_Degrees "Integer degrees of latitude. Offset -89 applied by DBC (raw+offset=value). Valid range -89 to 90. 254=Unknown, 255=Invalid.";
+CM_ SG_ 1122 GPS_Longitude_Degrees "Integer degrees of longitude. Offset -179 applied by DBC (raw+offset=value). Valid range -179 to 180. 510=Unknown, 511=Fault.";
+CM_ SG_ 1122 GpsHsphLattSth_D_Actl "Latitude hemisphere: 2=Northern, 1=Southern, 0=Invalid, 3=Fault.";
+CM_ SG_ 1122 GpsHsphLongEast_D_Actl "Longitude hemisphere: 1=Eastern, 2=Western, 0=Invalid, 3=Fault.";
+CM_ BO_ 1123 "GPS UTC timestamp and fix quality data. UTC time confirmed valid to approx +/-0.5s against NTP reference during testing. GPS data typically appears 17-752ms after a CAN bus wake cycle. Gps_B_Falt=1 indicates GPS module fault.";
+CM_ SG_ 1123 GPS_UTC_hours "UTC hour (0-23). 30=Unknown, 31=Invalid.";
+CM_ SG_ 1123 GPS_Pdop "Position dilution of precision. Factor 0.2 (raw*0.2=value). Lower=better fix quality. 30=Unknown, 31=Invalid.";
+CM_ BO_ 1124 "GPS fix quality, speed, heading, and satellite data. GPS_dimension indicates fix type: 0=No_Fix, 1=2D, 2=3D. GPS_Speed in MPH (254=Unknown, 255=Invalid). GPS_Heading in degrees 0-360 (0.01 deg resolution). Altitude in feet above MSL with offset -20460.";
+CM_ SG_ 1124 GPS_dimension "GPS fix dimension: 0=No_Fix (no valid position), 1=2D fix, 2=3D fix.";
+CM_ SG_ 1124 GPS_Heading "True heading in degrees. Factor 0.01 (raw*0.01=value). 65534=Unknown, 65535=Fault.";
+CM_ SG_ 1124 GPS_MSL_altitude "Altitude above mean sea level in feet. Factor 10, offset -20460 (raw*10-20460=value). 4094=Unknown, 4095=Fault.";
+
+VAL_ 1122 GpsHsphLattSth_D_Actl
+ 3 "Fault"
+ 2 "Northern"
+ 1 "Southern"
+ 0 "Invalid" ;
+
+VAL_ 1122 GpsHsphLongEast_D_Actl
+ 3 "Fault"
+ 2 "Western"
+ 1 "Eastern"
+ 0 "Invalid" ;
+
+VAL_ 1122 GPS_Latitude_Degrees
+ 255 "Invalid"
+ 254 "Unknown" ;
+
+VAL_ 1122 GPS_Latitude_Minutes
+ 63 "Fault"
+ 62 "Unknown" ;
+
+VAL_ 1122 GPS_Latitude_Min_dec
+ 16383 "Invalid"
+ 16382 "Unknown" ;
+
+VAL_ 1122 GPS_Longitude_Degrees
+ 511 "Fault"
+ 510 "Unknown" ;
+
+VAL_ 1122 GPS_Longitude_Minutes
+ 63 "Fault"
+ 62 "Unknown" ;
+
+VAL_ 1122 GPS_Longitude_Min_dec
+ 16383 "Invalid"
+ 16382 "Unknown" ;
+
+VAL_ 1123 GPS_UTC_hours
+ 31 "Invalid"
+ 30 "Unknown" ;
+
+VAL_ 1123 GPS_UTC_minutes
+ 63 "Fault"
+ 62 "Unknown" ;
+
+VAL_ 1123 GPS_UTC_seconds
+ 63 "Fault"
+ 62 "Unknown" ;
+
+VAL_ 1123 GPS_Compass_direction
+ 7 "NorthWest"
+ 6 "West"
+ 5 "SouthWest"
+ 4 "South"
+ 3 "SouthEast"
+ 2 "East"
+ 1 "NorthEast"
+ 0 "North" ;
+
+VAL_ 1123 GPS_Pdop
+ 31 "Invalid"
+ 30 "Unknown" ;
+
+VAL_ 1123 GPS_Actual_vs_Infer_pos
+ 1 "Inferred_Position"
+ 0 "Actual_Position" ;
+
+VAL_ 1123 Gps_B_Falt
+ 1 "Yes"
+ 0 "No" ;
+
+VAL_ 1123 GpsUtcYr_No_Actl
+ 31 "Fault" ;
+
+VAL_ 1123 GpsUtcMnth_No_Actl
+ 15 "Fault" ;
+
+VAL_ 1124 GPS_dimension
+ 2 "_3D"
+ 1 "_2D"
+ 0 "No_Fix" ;
+
+VAL_ 1124 GPS_Speed
+ 255 "Invalid"
+ 254 "Unknown" ;
+
+VAL_ 1124 GPS_Sat_num_in_view
+ 31 "Invalid"
+ 30 "Unknown" ;
+
+VAL_ 1124 GPS_MSL_altitude
+ 4095 "Fault"
+ 4094 "Unknown" ;
+
+VAL_ 1124 GPS_Heading
+ 65535 "Fault"
+ 65534 "Unknown" ;
+
+VAL_ 1124 GPS_Hdop
+ 31 "Invalid"
+ 30 "Unknown" ;
+
+VAL_ 1124 GPS_Vdop
+ 31 "Invalid"
+ 30 "Unknown" ;
+
