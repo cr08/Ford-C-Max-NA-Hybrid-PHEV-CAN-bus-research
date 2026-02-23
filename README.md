@@ -12,7 +12,7 @@ Pleae refer to the DBC file linked above for full definitions. Below are just co
 
 ❔= Signal details/explanation confirmed/verified
 
-### 0x22A - TCU_CmdVec
+### 0x22A (554) - TCU_CmdVec
 
 * Command vector for the TCU/telematics system to command the vehicle for remote start/lock/unlock and data refresh requests. All bytes set to 0x00. Byte 7 is the only known byte to be used.
 
@@ -23,8 +23,7 @@ Pleae refer to the DBC file linked above for full definitions. Below are just co
 | TcuCmd_EngCtrl  | Remote Start/Remote Stop command bits. Default 0 when not actively sending these commands. 1 used for Remote Start. 2 used for Remote Stop. When sending these commands, only a single message broadcast with this bit active is required. For remote start, a lock command should be sent before it (details below) with ideally a 1 second gap between commands. | ✅ | ✅ |
 | TcuCmd_LockCtrl | Remote Lock and Unlock command bits. Default 0 when not actively sending these commands. 1 is used for Unlock. 2 used for Lock. Only a single message with the bit active needs to be broadcast.                                                                                                                                                                   | ✅ | ✅ |
 
-
-### 0x167 - VehicleOperatingModes_CGEA12
+### 0x167 (359) - VehicleOperatingModes_CGEA12
 
 * Basic powertrain stats
 
@@ -34,3 +33,19 @@ Pleae refer to the DBC file linked above for full definitions. Below are just co
 | Eng_D_Stat        | Engine/ICE running status. As of writing only two statuses are seen on the C-Max: EngAutoStopped while vehicle is running and engine is off. EngOn when the engine is running.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | ✅ | ✅ |
 | PwPckTq_D_Stat    | 'Powerpack' operation status. A more general powertrain operation and motive power availability status. PwPckOff_TqNotAvailable = Full vehicle powertrain (ICE+EV) is not operational and motive power not available. PwPckOn_TqNotAvailable = Full powertrain operational but motive power not available. Seen on remote start events as well as while the vehicle is plugged in (vehicle cannot be put into gear while plugged in by design). StartInPrgress_TqNotAvail = Start in progress value. On the C-Max being a hybrid vehicle this is seen VERY briefly. PwPckOn_TqAvailable = Full powertrain is operational and vehicle has motive power available. Indicative of a key-initiated start. | ✅ | ✅ |
 | PlgActvArb_B_Actl | Energi/PHEV only. EVSE plug status. Self explanatory and one bit in use. 0 indicates the vehicle is unplugged. 1 indicates it is plugged in.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          | ✅ | ✅ |
+
+### 0x433 (1075) - BodyInfo_CGEA12
+
+Lock/Door Ajar/Alarm statuses
+
+
+| Signal          | Comments/Notes                                                                                                         | 📊 | ❔ |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------ | ---- | ---- |
+| DoorAjar_Drv    | Driver's Door Ajar status. Pattern matched only. Additional verification still needed. 0 = Closed / 1 = Open           | ❌ | ❌ |
+| DoorAjar_Pax    | Front Passenger Door Ajar status. Pattern matched only. Additional verification still needed. 0 = Closed / 1 = Open    | ❌ | ❌ |
+| DoorAjar_RdrDrv | Driver side rear Door Ajar status. Pattern matched only. Additional verification still needed. 0 = Closed / 1 = Open   | ❌ | ❌ |
+| DoorAjar_RdrPax | Pasenger side rear Door Ajar status. Pattern matched only. Additional verification still needed. 0 = Closed / 1 = Open | ❌ | ❌ |
+| DoorAjar_Hatch  | Hatch Door Ajar status. Pattern matched only. Additional verification still needed. 0 = Closed / 1 = Open              | ❌ | ❌ |
+| SecurityState   | Perimeter alarm arming/active state. Further verification on values needed.                                            | ❌ | ❌ |
+| Locked          | Vehicle lock status. Only two values have been seen so far, others may exist. 0 = Locked / 1 = Unlocked                | ✅ | ✅ |
+| AlarmActive     | Status bit indicating if the perimeter alarm has been triggered. 0 = Normal operation / 1 = Alarm triggered/active     | ❌ | ❌ |
