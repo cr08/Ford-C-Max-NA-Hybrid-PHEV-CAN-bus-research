@@ -40,7 +40,7 @@ BO_ 1075 BodyInfo_CGEA12: 8 Vector__XXX
  SG_ DoorAjar_RdrDrv : 5|1@1+ (1,0) [0|1] "" CGEA12_TCU
  SG_ DoorAjar_RdrPax : 4|1@1+ (1,0) [0|1] "" CGEA12_TCU
  SG_ DoorAjar_Hatch  : 3|1@1+ (1,0) [0|1] "" CGEA12_TCU
- SG_ SecurityState   : 40|8@1+ (1,0) [0|255] "" CGEA12_TCU
+ SG_ SecurityArmed   : 44|1@1+ (1,0) [0|1] "" CGEA12_TCU
  SG_ Locked          : 45|1@1+ (1,0) [0|1] "" CGEA12_TCU
  SG_ AlarmActive     : 46|1@1+ (1,0) [0|1] "" CGEA12_TCU
 
@@ -140,9 +140,9 @@ CM_ SG_ 1075 DoorAjar_Pax "Passenger front door ajar. 1=open, 0=closed. Bit6 of 
 CM_ SG_ 1075 DoorAjar_RdrDrv "Driver rear door ajar. 1=open, 0=closed. Bit5 of byte0 (mask 0x20).";
 CM_ SG_ 1075 DoorAjar_RdrPax "Passenger rear door ajar. 1=open, 0=closed. Bit4 of byte0 (mask 0x10).";
 CM_ SG_ 1075 DoorAjar_Hatch "Rear hatch/liftgate ajar. 1=open, 0=closed. Bit3 of byte0 (mask 0x08).";
-CM_ SG_ 1075 SecurityState "Full-byte security state from byte5. 0x90(144)=Armed/Locked, 0xA0(160)=Disarmed/Unlocked, 0xD0(208)=AlarmActive. On door-handle alarm trigger: HS-CAN is silent for ~5.6s between initial BCM wake and 0xD0 transition — IPC graduated beep (slow/medium/fast) occurs entirely off HS-CAN. Ignition-button alarm trigger fires horn immediately with no IPC beep sequence.";
-CM_ SG_ 1075 Locked "Lock state extracted from byte5 bit5 (mask 0x20). 0=Locked, 1=Unlocked. Inverted from a set=active convention — a set bit means the security system is NOT armed (unarmed/unlocked).";
-CM_ SG_ 1075 AlarmActive "Alarm firing flag from byte5 bit6 (mask 0x40). 0=Normal, 1=Alarm active (horn sounding). Returns to 0 (~16s after horn starts) when car re-arms.";
+CM_ SG_ 1075 SecurityArmed "Byte5 bit4 (mask 0x10). 1=Armed/Locked, 0=Disarmed/Unlocked. Natural-polarity complement to Locked (bit5) — both should always read opposite states in normal operation. Transitional 0x80 is the only case where both are 0 simultaneously.";
+CM_ SG_ 1075 Locked "Byte5 bit5 (mask 0x20). 0=Armed/Locked, 1=Disarmed/Unlocked. Inverted polarity — set bit means NOT armed. Complement to SecurityArmed (bit4). Observed byte5 values: 0x90=Armed, 0xA0=Disarmed, 0xD0=Alarm.";
+CM_ SG_ 1075 AlarmActive "Byte5 bit6 (mask 0x40). 0=Normal, 1=Alarm active (horn sounding). Returns to 0 (~16s after horn starts) when car re-arms. Door-handle alarm: HS-CAN silent for ~5.6s between BCM wake and AlarmActive transition — IPC graduated beep (slow/medium/fast) occurs entirely off HS-CAN. Ignition-button alarm fires horn immediately with no IPC beep sequence.";
 CM_ BO_ 1072 "Cluster info message. OdometerMasterValue confirmed on CGEA1.2 at same ID (0x430) and bit position as FD1 DBC. Value in km, unsigned 24-bit Motorola. Updates approximately every 100s of driving (1 km resolution).";
 CM_ BO_ 342 "Engine coolant and oil temperatures confirmed on CGEA1.2 at same ID (0x156) and bit positions as FD1 DBC. Offset -60 degC confirmed by cold-soak: both signals read -2degC (~28F) at ambient ~30F. ICE typically starts ~456s into a cold drive on this PHEV platform. EngOvrhtMitgActv_D_Ind also confirmed present at same bit position.";
 CM_ SG_ 342 EngOvrhtMitgActv_D_Ind "Engine overheat mitigation mode. 0=Normal_Mode (no action), 1=Mode1 (first-level mitigation active), 2=Mode2 (second-level mitigation active), 3=Undefined.";
@@ -243,11 +243,9 @@ VAL_ 1075 DoorAjar_Hatch
  0 "Closed"
  1 "Open" ;
 
-VAL_ 1075 SecurityState
- 160 "Disarmed"
- 144 "Armed"
- 208 "AlarmActive" ;
-
+VAL_ 1075 SecurityArmed
+ 0 "Disarmed"
+ 1 "Armed" ;
 VAL_ 1075 Locked
  0 "Locked"
  1 "Unlocked" ;
