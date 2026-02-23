@@ -46,6 +46,6 @@ Lock/Door Ajar/Alarm statuses
 | DoorAjar_RdrDrv | Driver side rear Door Ajar status. Pattern matched only. Additional verification still needed. 0 = Closed / 1 = Open   | ❌ | ❌ |
 | DoorAjar_RdrPax | Pasenger side rear Door Ajar status. Pattern matched only. Additional verification still needed. 0 = Closed / 1 = Open | ❌ | ❌ |
 | DoorAjar_Hatch  | Hatch Door Ajar status. Pattern matched only. Additional verification still needed. 0 = Closed / 1 = Open              | ❌ | ❌ |
-| SecurityState   | Perimeter alarm arming/active state. Further verification on values needed.                                            | ❌ | ❌ |
+| SecurityArmed   | Perimeter alarm arming/active state. Additional verification still needed. 0 = Disarmed / 1 = Armed                    | ❌ | ❌ |
 | Locked          | Vehicle lock status. Only two values have been seen so far, others may exist. 0 = Locked / 1 = Unlocked                | ✅ | ✅ |
 | AlarmActive     | Status bit indicating if the perimeter alarm has been triggered. 0 = Normal operation / 1 = Alarm triggered/active     | ❌ | ❌ |
