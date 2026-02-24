@@ -1,4 +1,4 @@
-# Ford-C-Max-NA-Hybrid-PHEV-CAN-bus-research
+# Ford C-Max NA Hybrid/PHEV CANbus research
 
 Repository of notes and data from my CAN sniffing and reverse engineering work on the NA Ford C-Max Hybrid/PHEV
 
